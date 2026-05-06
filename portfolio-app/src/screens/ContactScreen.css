@@ -2,6 +2,71 @@
 
 .contact-body {
   padding: var(--s4) var(--s5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+
+/* Status card ────────────────────────────────────────── */
+.status-card {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  background: var(--surface);
+  border: 1px solid var(--green-border);
+  border-radius: var(--r);
+  padding: var(--s4) var(--s5);
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--green); }
+  50%       { opacity: 0.6; box-shadow: 0 0 3px var(--green); }
+}
+
+.status-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.status-heading {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.status-value {
+  font-size: var(--fs-base);
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Groups ─────────────────────────────────────────────── */
+.contact-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+
+.contact-group-label {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0 var(--s1);
 }
 
 /* Contact list ───────────────────────────────────────── */
@@ -10,17 +75,16 @@
   display: flex;
   flex-direction: column;
   gap: var(--s2);
-  margin-bottom: var(--s5);
 }
 
 .contact-row {
   display: flex;
   align-items: center;
-  gap: var(--s4);
+  gap: var(--s3);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r);
-  padding: var(--s4) var(--s5);
+  padding: var(--s3) var(--s4);
   text-decoration: none;
   transition: border-color var(--t), background var(--t);
 }
@@ -35,8 +99,8 @@
 }
 
 .contact-icon {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -48,8 +112,8 @@
 }
 
 .contact-icon svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .contact-text {
@@ -83,12 +147,13 @@
   color: var(--accent-soft);
 }
 
-/* Shared edit hint ───────────────────────────────────── */
+/* Edit hint ──────────────────────────────────────────── */
 .edit-hint {
   font-size: var(--fs-xs);
   color: var(--text-muted);
   text-align: center;
-  padding: var(--s3);
+  padding: var(--s2);
+  margin-top: auto;
 }
 
 .edit-hint code {
@@ -96,3 +161,5 @@
   color: var(--accent-soft);
   font-size: var(--fs-xs);
 }
+
+.list-pad { height: var(--s5); }
