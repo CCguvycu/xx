@@ -1,0 +1,109 @@
+.about-screen { /* inherits .screen */ }
+
+.about-body {
+  padding: 0 var(--s5) var(--s5);
+}
+
+/* Profile card ───────────────────────────────────────── */
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--s8) var(--s5) var(--s6);
+  text-align: center;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--av-color, var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: var(--s4);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--av-color, var(--accent)) 20%, transparent);
+}
+
+.profile-name {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.3px;
+  margin-bottom: var(--s2);
+}
+
+.profile-tagline {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+/* Stats ─────────────────────────────────────────────── */
+.stats-row {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: var(--s5);
+}
+
+.stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--s4);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+
+.stat-item:last-child {
+  border-right: none;
+}
+
+.stat-value {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  color: var(--accent-soft);
+  line-height: 1;
+  margin-bottom: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Bio section ────────────────────────────────────────── */
+.about-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: var(--s4) var(--s5);
+  margin-bottom: var(--s4);
+}
+
+.about-bio {
+  font-size: var(--fs-base);
+  color: var(--text-2);
+  line-height: 1.7;
+}
+
+/* Edit hint ──────────────────────────────────────────── */
+.edit-hint {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  text-align: center;
+  padding: var(--s3);
+}
+
+.edit-hint code {
+  font-family: ui-monospace, monospace;
+  color: var(--accent-soft);
+  font-size: var(--fs-xs);
+}

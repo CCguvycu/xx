@@ -3,86 +3,102 @@ import { projects, categories } from "../data/projects";
 import ProjectCard from "../components/ProjectCard";
 import "./HomeScreen.css";
 
+const SearchIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
+    aria-hidden="true">
+    <circle cx="11" cy="11" r="8" />
+    <path d="m21 21-4.35-4.35" />
+  </svg>
+);
+
+const ClearIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+    <path d="M18 6 6 18M6 6l12 12" />
+  </svg>
+);
+
 export default function HomeScreen({ onSelectProject }) {
   const [activeCategory, setActiveCategory] = useState("All");
   const [search, setSearch] = useState("");
 
   const filtered = projects.filter((p) => {
     const matchCat = activeCategory === "All" || p.category === activeCategory;
+    const q = search.toLowerCase();
     const matchSearch =
-      p.title.toLowerCase().includes(search.toLowerCase()) ||
-      p.description.toLowerCase().includes(search.toLowerCase()) ||
-      p.tags.some((t) => t.toLowerCase().includes(search.toLowerCase()));
+      !q ||
+      p.title.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q) ||
+      p.tags.some((t) => t.toLowerCase().includes(q));
     return matchCat && matchSearch;
   });
 
   return (
-    <div className="home">
-      <div className="home-header">
-        <div className="header-top">
-          <div className="brand">
-            <span className="brand-icon">⚡</span>
-            <div>
-              <h1 className="brand-name">My Portfolio</h1>
-              <p className="brand-sub">Everything I've built</p>
-            </div>
-          </div>
-          <div className="stats">
-            <div className="stat">
-              <span className="stat-num">{projects.length}</span>
-              <span className="stat-label">Projects</span>
-            </div>
-          </div>
+    <div className="screen home-screen">
+      <header className="screen-header home-header">
+        <div className="home-title-row">
+          <h1 className="screen-title">Projects</h1>
+          <span className="home-count" aria-label={`${projects.length} projects`}>
+            {projects.length}
+          </span>
         </div>
 
-        <div className="search-bar">
-          <span className="search-icon">🔍</span>
+        <div className="search-bar" role="search">
+          <span className="search-icon"><SearchIcon /></span>
           <input
-            type="text"
-            placeholder="Search projects..."
+            type="search"
+            placeholder="Search projects…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            aria-label="Search projects"
           />
           {search && (
-            <button className="search-clear" onClick={() => setSearch("")}>
-              ✕
+            <button
+              className="search-clear"
+              onClick={() => setSearch("")}
+              aria-label="Clear search"
+            >
+              <ClearIcon />
             </button>
           )}
         </div>
 
-        <div className="categories">
+        <div className="cat-row" role="group" aria-label="Filter by category">
           {categories.map((cat) => (
             <button
               key={cat}
               className={`cat-pill ${activeCategory === cat ? "active" : ""}`}
               onClick={() => setActiveCategory(cat)}
+              aria-pressed={activeCategory === cat}
             >
               {cat}
             </button>
           ))}
         </div>
-      </div>
+      </header>
 
-      <div className="projects-scroll">
+      <main className="scroll-body projects-body">
         {filtered.length === 0 ? (
-          <div className="empty-state">
-            <span className="empty-icon">🔭</span>
-            <p>Nothing found</p>
-            <span>Try a different search or category</span>
+          <div className="empty" role="status">
+            <span className="empty-icon" aria-hidden="true">🔭</span>
+            <p className="empty-title">Nothing found</p>
+            <p className="empty-sub">Try a different search or category</p>
           </div>
         ) : (
-          <div className="projects-grid">
+          <ul className="projects-list" aria-label="Projects">
             {filtered.map((project) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                onClick={() => onSelectProject(project)}
-              />
+              <li key={project.id}>
+                <ProjectCard
+                  project={project}
+                  onClick={() => onSelectProject(project)}
+                />
+              </li>
             ))}
-          </div>
+          </ul>
         )}
-        <div className="scroll-pad" />
-      </div>
+        <div className="list-pad" />
+      </main>
     </div>
   );
 }
