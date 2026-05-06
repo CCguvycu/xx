@@ -13,6 +13,33 @@
   border-bottom: 1px solid var(--border);
 }
 
+.detail-nav-right {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background var(--t-fast), color var(--t-fast), border-color var(--t-fast);
+}
+
+.share-btn:hover,
+.share-btn:active {
+  background: var(--surface3);
+  color: var(--accent-soft);
+  border-color: var(--accent);
+}
+
 .back-btn {
   display: inline-flex;
   align-items: center;
