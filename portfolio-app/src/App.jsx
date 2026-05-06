@@ -3,13 +3,16 @@ import HomeScreen from "./screens/HomeScreen";
 import SkillsScreen from "./screens/SkillsScreen";
 import AboutScreen from "./screens/AboutScreen";
 import ContactScreen from "./screens/ContactScreen";
+import VaultScreen from "./screens/VaultScreen";
 import ProjectDetail from "./screens/ProjectDetail";
+import VaultNote from "./screens/VaultNote";
 import BottomNav from "./components/BottomNav";
 import "./App.css";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("projects");
   const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedNote, setSelectedNote] = useState(null);
 
   if (selectedProject) {
     return (
@@ -17,6 +20,17 @@ export default function App() {
         <ProjectDetail
           project={selectedProject}
           onBack={() => setSelectedProject(null)}
+        />
+      </div>
+    );
+  }
+
+  if (selectedNote) {
+    return (
+      <div className="app">
+        <VaultNote
+          note={selectedNote}
+          onBack={() => setSelectedNote(null)}
         />
       </div>
     );
@@ -31,6 +45,9 @@ export default function App() {
         {activeTab === "skills"   && <SkillsScreen  key="skills" />}
         {activeTab === "about"    && <AboutScreen   key="about" />}
         {activeTab === "contact"  && <ContactScreen key="contact" />}
+        {activeTab === "vault"    && (
+          <VaultScreen key="vault" onOpenNote={setSelectedNote} />
+        )}
       </div>
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
     </div>
