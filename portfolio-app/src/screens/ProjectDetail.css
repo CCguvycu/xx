@@ -1,0 +1,193 @@
+.detail-screen {
+  /* inherits .screen */
+}
+
+/* Nav bar ────────────────────────────────────────────── */
+.detail-nav {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--top-pad) var(--s5) var(--s4);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.detail-nav-right {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background var(--t-fast), color var(--t-fast), border-color var(--t-fast);
+}
+
+.share-btn:hover,
+.share-btn:active {
+  background: var(--surface3);
+  color: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  background: none;
+  border: none;
+  color: var(--accent-soft);
+  font-size: var(--fs-base);
+  font-weight: 500;
+  cursor: pointer;
+  padding: var(--s1) 0;
+  transition: color var(--t-fast);
+}
+
+.back-btn:hover { color: var(--accent); }
+
+/* Hero ───────────────────────────────────────────────── */
+.detail-hero {
+  position: relative;
+  padding: var(--s8) var(--s5) var(--s6);
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+/* Radial glow using the project's accent color */
+.detail-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 0%,
+    color-mix(in srgb, var(--c, var(--accent)) 20%, transparent) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.detail-icon {
+  font-size: 64px;
+  line-height: 1;
+  margin-bottom: var(--s4);
+  position: relative;
+}
+
+.detail-title {
+  font-size: var(--fs-2xl);
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.5px;
+  margin-bottom: var(--s3);
+  position: relative;
+}
+
+.detail-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  position: relative;
+}
+
+.detail-cat {
+  background: color-mix(in srgb, var(--c, var(--accent)) 20%, transparent);
+  color: color-mix(in srgb, var(--c, var(--accent)) 90%, white);
+  border: 1px solid color-mix(in srgb, var(--c, var(--accent)) 40%, transparent);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  padding: 3px var(--s3);
+  border-radius: var(--r-full);
+}
+
+.detail-year,
+.detail-version {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.detail-year::before,
+.detail-version::before {
+  content: '·';
+  margin-right: var(--s2);
+  color: var(--border);
+}
+
+/* Sections ───────────────────────────────────────────── */
+.detail-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.detail-section {
+  padding: var(--s5);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.detail-text {
+  font-size: var(--fs-base);
+  color: var(--text-2);
+  line-height: 1.7;
+}
+
+/* Tags */
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+.detail-tag {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  padding: 5px var(--s3);
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  color: var(--text-2);
+}
+
+/* Links */
+.detail-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+
+.detail-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: var(--s3) var(--s4);
+  color: var(--accent-soft);
+  text-decoration: none;
+  font-size: var(--fs-base);
+  font-weight: 500;
+  transition: border-color var(--t), background var(--t);
+}
+
+.detail-link:hover {
+  border-color: var(--accent);
+  background: var(--surface3);
+}
+
+.list-pad { height: var(--s8); }

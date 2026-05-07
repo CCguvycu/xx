@@ -1,0 +1,134 @@
+.home-screen {
+  /* inherits .screen from App.css */
+}
+
+/* Header ─────────────────────────────────────────────── */
+.home-header {
+  gap: var(--s3);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: var(--s3);
+}
+
+.home-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+}
+
+.home-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 22px;
+  padding: 0 var(--s2);
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--text-2);
+}
+
+/* Search ─────────────────────────────────────────────── */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 0 var(--s3);
+  transition: border-color var(--t);
+}
+
+.search-bar:focus-within {
+  border-color: var(--accent);
+}
+
+.search-icon {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+}
+
+.search-bar input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: var(--fs-base);
+  padding: 11px 0;
+  min-width: 0;
+}
+
+.search-bar input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-clear {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  padding: var(--s1);
+  border-radius: var(--r-sm);
+  transition: color var(--t-fast);
+}
+
+.search-clear:hover { color: var(--text); }
+
+/* Category pills ─────────────────────────────────────── */
+.cat-row {
+  display: flex;
+  gap: var(--s2);
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.cat-row::-webkit-scrollbar { display: none; }
+
+.cat-pill {
+  flex-shrink: 0;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  padding: 5px var(--s3);
+  cursor: pointer;
+  transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+}
+
+.cat-pill:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.cat-pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* Projects list ──────────────────────────────────────── */
+.projects-body {
+  padding: var(--s4) var(--s5);
+}
+
+.projects-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+}
+
+.list-pad { height: var(--s5); }

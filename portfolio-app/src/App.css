@@ -1,0 +1,184 @@
+/* ── Design Tokens ─────────────────────────────────────── */
+:root {
+  /* Colors */
+  --bg:          #0a0a0f;
+  --surface:     #111118;
+  --surface2:    #17171f;
+  --surface3:    #1e1e28;
+  --accent:      #6d5aff;
+  --accent-soft: #8b7fff;
+  --accent-glow: rgba(109, 90, 255, 0.18);
+  --green:       #22c55e;
+  --green-bg:    rgba(34, 197, 94, 0.12);
+  --green-border:rgba(34, 197, 94, 0.3);
+  --amber:       #f59e0b;
+  --amber-bg:    rgba(245, 158, 11, 0.12);
+  --amber-border:rgba(245, 158, 11, 0.3);
+  --text:        #f0f0f8;
+  --text-2:      #a8a8c0;
+  --text-muted:  #60607a;
+  --border:      #22222e;
+  --border-soft: #1a1a24;
+
+  /* Spacing — 8px grid */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 20px;
+  --s6: 24px;
+  --s8: 32px;
+  --s10: 40px;
+  --s12: 48px;
+
+  /* Type scale */
+  --fs-xs:   11px;
+  --fs-sm:   13px;
+  --fs-base: 15px;
+  --fs-md:   17px;
+  --fs-lg:   20px;
+  --fs-xl:   24px;
+  --fs-2xl:  30px;
+
+  /* Radii */
+  --r-sm:   8px;
+  --r:      14px;
+  --r-lg:   20px;
+  --r-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm:     0 2px 8px rgba(0,0,0,0.25);
+  --shadow:        0 4px 24px rgba(0,0,0,0.4);
+  --shadow-accent: 0 4px 24px rgba(109, 90, 255, 0.3);
+
+  /* Transitions */
+  --t-fast: 0.15s ease;
+  --t:      0.22s ease;
+  --t-slow: 0.35s ease;
+
+  /* Layout */
+  --nav-h:   62px;
+  --top-pad: 52px;
+}
+
+/* ── Base ──────────────────────────────────────────────── */
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: var(--fs-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── App shell ─────────────────────────────────────────── */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.screen-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Screen entrance animation ─────────────────────────── */
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  animation: screenIn var(--t) ease both;
+}
+
+/* ── Shared: status badges ─────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: var(--r-full);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.badge-released {
+  background: var(--green-bg);
+  color: var(--green);
+  border: 1px solid var(--green-border);
+}
+
+.badge-in-progress {
+  background: var(--amber-bg);
+  color: var(--amber);
+  border: 1px solid var(--amber-border);
+}
+
+.badge-archived {
+  background: rgba(255,255,255,0.06);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+/* ── Shared: scrollable body ───────────────────────────── */
+.scroll-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.scroll-body::-webkit-scrollbar { width: 3px; }
+.scroll-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: var(--r-full); }
+
+/* ── Shared: screen header bar ─────────────────────────── */
+.screen-header {
+  flex-shrink: 0;
+  padding: var(--top-pad) var(--s5) var(--s4);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.screen-title {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.5px;
+}
+
+/* ── Shared: empty state ───────────────────────────────── */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  padding: var(--s12) var(--s5);
+  text-align: center;
+}
+
+.empty-icon { font-size: 44px; margin-bottom: var(--s2); }
+.empty-title { font-size: var(--fs-md); font-weight: 600; color: var(--text); }
+.empty-sub   { font-size: var(--fs-sm); color: var(--text-muted); }
+
+/* ── Shared: section label ─────────────────────────────── */
+.section-label {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--s2);
+}
