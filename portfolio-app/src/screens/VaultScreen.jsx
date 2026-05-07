@@ -46,7 +46,7 @@ const VaultBookIcon = () => (
 
 export default function VaultScreen({ onOpenNote }) {
   const [phase, setPhase] = useState("init"); // init | setup | permission | loading | browse | error
-  const DEFAULT_VAULT = "arukux-vault";
+  const DEFAULT_VAULT = "Download/vault/Personal Vault";
   const [vaultPath, setVaultPath] = useState(() => localStorage.getItem("vault_path") || DEFAULT_VAULT);
   const [inputPath, setInputPath] = useState(() => localStorage.getItem("vault_path") || DEFAULT_VAULT);
   const [currentPath, setCurrentPath] = useState("");
