@@ -46,7 +46,7 @@ const VaultBookIcon = () => (
 
 export default function VaultScreen({ onOpenNote }) {
   const [phase, setPhase] = useState("init"); // init | setup | permission | loading | browse | error
-  const DEFAULT_VAULT = "Obsidian/arukux-vault";
+  const DEFAULT_VAULT = "arukux-vault";
   const [vaultPath, setVaultPath] = useState(() => localStorage.getItem("vault_path") || DEFAULT_VAULT);
   const [inputPath, setInputPath] = useState(() => localStorage.getItem("vault_path") || DEFAULT_VAULT);
   const [currentPath, setCurrentPath] = useState("");
@@ -76,6 +76,8 @@ export default function VaultScreen({ onOpenNote }) {
       const msg = (e.message || "").toLowerCase();
       if (msg.includes("permission") || msg.includes("denied") || msg.includes("access")) {
         setPhase("permission");
+      } else if (msg.includes("does not exist") || msg.includes("no such file") || msg.includes("not found")) {
+        setPhase("setup");
       } else {
         setErrorMsg(e.message || "Could not read directory");
         setPhase("error");
