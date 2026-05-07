@@ -110,6 +110,7 @@ export default function VaultScreen({ onOpenNote }) {
     localStorage.setItem("vault_path", trimmed);
     setVaultPath(trimmed);
     setShowSettings(false);
+    loadDir(trimmed);
   }
 
   function navigateTo(item) {
