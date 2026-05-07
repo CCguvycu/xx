@@ -44,9 +44,10 @@ const VaultBookIcon = () => (
   </svg>
 );
 
+const DEFAULT_VAULT = "Download/vault/Personal Vault";
+
 export default function VaultScreen({ onOpenNote }) {
-  const [phase, setPhase] = useState("init"); // init | setup | permission | loading | browse | error
-  const DEFAULT_VAULT = "Download/vault/Personal Vault";
+  const [phase, setPhase] = useState("init");
   const [vaultPath, setVaultPath] = useState(() => localStorage.getItem("vault_path") || DEFAULT_VAULT);
   const [inputPath, setInputPath] = useState(() => localStorage.getItem("vault_path") || DEFAULT_VAULT);
   const [currentPath, setCurrentPath] = useState("");
@@ -74,13 +75,19 @@ export default function VaultScreen({ onOpenNote }) {
       setPhase("browse");
     } catch (e) {
       const msg = (e.message || "").toLowerCase();
-      if (msg.includes("permission") || msg.includes("denied") || msg.includes("access")) {
+      const isPathMissing = msg.includes("does not exist") || msg.includes("no such file") || msg.includes("not found");
+      const isPermission = msg.includes("permission") || msg.includes("denied") || msg.includes("access");
+
+      if (isPathMissing) {
+        setErrorMsg(e.message || "Path not found");
+        setPhase("notfound");
+      } else if (isPermission) {
         setPhase("permission");
-      } else if (msg.includes("does not exist") || msg.includes("no such file") || msg.includes("not found")) {
-        setPhase("setup");
       } else {
-        setErrorMsg(e.message || "Could not read directory");
-        setPhase("error");
+        // Unknown error — show it AND the permission instructions
+        // since most vault errors on Android 11+ are silent permission failures
+        setErrorMsg(e.message || "Unknown error");
+        setPhase("permission");
       }
     }
   }, []);
@@ -92,17 +99,6 @@ export default function VaultScreen({ onOpenNote }) {
       loadDir(vaultPath);
     }
   }, [vaultPath, loadDir]);
-
-  async function requestPermission() {
-    try {
-      const result = await Filesystem.requestPermissions();
-      if (result.publicStorage === "granted") {
-        loadDir(vaultPath);
-      }
-    } catch {
-      /* denied — stay on permission screen */
-    }
-  }
 
   function saveVaultPath() {
     const trimmed = inputPath.trim().replace(/^\/+|\/+$/g, "");
@@ -134,28 +130,24 @@ export default function VaultScreen({ onOpenNote }) {
   const pathParts = relPath ? relPath.split("/") : [];
   const vaultName = vaultPath.split("/").pop();
 
-  // Setup / Settings
+  // ── Setup / Settings ──────────────────────────────────
   if (phase === "setup" || showSettings) {
     const isSettings = showSettings && phase !== "setup";
     return (
       <div className="screen vault-screen">
         <header className="vault-nav">
-          {isSettings ? (
-            <button className="vault-back" onClick={() => setShowSettings(false)} aria-label="Back">
-              <BackIcon /><span>Vault</span>
-            </button>
-          ) : (
-            <span className="vault-nav-title">Vault</span>
-          )}
+          {isSettings
+            ? <button className="vault-back" onClick={() => setShowSettings(false)} aria-label="Back"><BackIcon /><span>Vault</span></button>
+            : <span className="vault-nav-title">Vault</span>
+          }
           {isSettings && <span className="vault-nav-title">Settings</span>}
         </header>
         <div className="scroll-body vault-setup">
           <div className="vault-setup-icon"><VaultBookIcon /></div>
-          <h2 className="vault-setup-title">
-            {isSettings ? "Change Vault" : "Connect Your Vault"}
-          </h2>
+          <h2 className="vault-setup-title">{isSettings ? "Change Vault" : "Connect Your Vault"}</h2>
           <p className="vault-setup-desc">
-            Enter the path to your Obsidian vault, relative to your phone's internal storage root.
+            Enter the path to your vault relative to your phone's internal storage root
+            (<code>/storage/emulated/0/</code>).
           </p>
           <div className="vault-path-input-wrap">
             <label className="vault-path-label" htmlFor="vault-path-input">Vault Path</label>
@@ -165,21 +157,17 @@ export default function VaultScreen({ onOpenNote }) {
               type="text"
               value={inputPath}
               onChange={e => setInputPath(e.target.value)}
-              placeholder="e.g. Obsidian/My Vault"
+              placeholder="e.g. Download/vault/Personal Vault"
               autoCapitalize="none"
               autoCorrect="off"
               spellCheck="false"
               onKeyDown={e => e.key === "Enter" && saveVaultPath()}
             />
             <p className="vault-path-hint">
-              Common: <code>Obsidian/VaultName</code> · <code>Documents/Notes</code>
+              Examples: <code>Download/vault/Personal Vault</code> · <code>Obsidian/MyVault</code>
             </p>
           </div>
-          <button
-            className="vault-connect-btn"
-            onClick={saveVaultPath}
-            disabled={!inputPath.trim()}
-          >
+          <button className="vault-connect-btn" onClick={saveVaultPath} disabled={!inputPath.trim()}>
             {isSettings ? "Save & Reload" : "Connect Vault"}
           </button>
         </div>
@@ -187,52 +175,66 @@ export default function VaultScreen({ onOpenNote }) {
     );
   }
 
-  // Permission
-  if (phase === "permission") {
+  // ── Path not found ─────────────────────────────────────
+  if (phase === "notfound") {
     return (
       <div className="screen vault-screen">
         <header className="vault-nav">
           <span className="vault-nav-title">Vault</span>
+          <button className="vault-settings-btn" onClick={() => setShowSettings(true)} aria-label="Settings"><SettingsIcon /></button>
         </header>
         <div className="scroll-body vault-state-wrap">
-          <div className="vault-state-emoji">🔐</div>
-          <h2 className="vault-state-title">Storage Permission Needed</h2>
+          <div className="vault-state-emoji">📂</div>
+          <h2 className="vault-state-title">Folder not found</h2>
           <p className="vault-state-desc">
-            To read your Obsidian vault, the app needs access to your device's storage.
+            Could not find:
           </p>
-          <button className="vault-connect-btn" onClick={requestPermission}>
-            Grant Permission
-          </button>
-          <p className="vault-perm-hint">
-            If no prompt appears, enable "Files and media" for this app in Android Settings.
+          <code className="vault-path-badge">{vaultPath}</code>
+          <p className="vault-state-desc">
+            Open your phone's Files app to find where your vault actually is, then tap Change Path.
           </p>
+          <button className="vault-connect-btn" onClick={() => setShowSettings(true)}>Change Path</button>
+          <button className="vault-change-btn" onClick={() => loadDir(vaultPath)}>Retry</button>
         </div>
       </div>
     );
   }
 
-  // Error
-  if (phase === "error") {
+  // ── Permission ─────────────────────────────────────────
+  if (phase === "permission") {
     return (
       <div className="screen vault-screen">
         <header className="vault-nav">
           <span className="vault-nav-title">Vault</span>
-          <button className="vault-settings-btn" onClick={() => setShowSettings(true)} aria-label="Vault settings">
-            <SettingsIcon />
-          </button>
+          <button className="vault-settings-btn" onClick={() => setShowSettings(true)} aria-label="Settings"><SettingsIcon /></button>
         </header>
         <div className="scroll-body vault-state-wrap">
-          <div className="vault-state-emoji">⚠️</div>
-          <h2 className="vault-state-title">Could not open vault</h2>
-          <p className="vault-state-desc vault-error-msg">{errorMsg}</p>
-          <button className="vault-connect-btn" onClick={() => loadDir(vaultPath)}>Retry</button>
+          <div className="vault-state-emoji">🔐</div>
+          <h2 className="vault-state-title">Storage Access Needed</h2>
+          {errorMsg ? (
+            <code className="vault-path-badge vault-error-code">{errorMsg}</code>
+          ) : null}
+          <p className="vault-state-desc">
+            Android 11+ requires manual permission. Follow these steps:
+          </p>
+          <ol className="vault-perm-steps">
+            <li>Open <strong>Android Settings</strong></li>
+            <li>Tap <strong>Apps</strong></li>
+            <li>Find and tap <strong>My Portfolio</strong></li>
+            <li>Tap <strong>Permissions</strong></li>
+            <li>Tap <strong>Files and media</strong></li>
+            <li>Select <strong>Allow management of all files</strong></li>
+          </ol>
+          <button className="vault-connect-btn" onClick={() => loadDir(vaultPath)}>
+            I've granted access — Retry
+          </button>
           <button className="vault-change-btn" onClick={() => setShowSettings(true)}>Change Path</button>
         </div>
       </div>
     );
   }
 
-  // Loading
+  // ── Loading / init ─────────────────────────────────────
   if (phase === "loading" || phase === "init") {
     return (
       <div className="screen vault-screen">
@@ -246,7 +248,7 @@ export default function VaultScreen({ onOpenNote }) {
     );
   }
 
-  // Browse
+  // ── Browse ─────────────────────────────────────────────
   return (
     <div className="screen vault-screen">
       <header className="vault-nav">
