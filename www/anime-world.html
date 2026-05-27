@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to Anime 🌸 — A Family Guide</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --sakura:  #ff6b9d;
+      --sunset:  #ff9a3c;
+      --sky:     #4fc3f7;
+      --mint:    #43e97b;
+      --violet:  #a855f7;
+      --gold:    #fbbf24;
+      --bg:      #0a0a14;
+      --bg2:     #0f0f1e;
+      --card:    #13132a;
+      --card2:   #1a1a35;
+      --text:    #f0f0ff;
+      --muted:   #8888bb;
+      --border:  #2a2a4a;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Floating particles ── */
+    .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0;
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10%  { opacity: .6; }
+      90%  { opacity: .4; }
+      100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .9rem 2rem;
+      background: rgba(10,10,20,.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,107,157,.2);
+    }
+    .nav-logo {
+      font-weight: 900; font-size: 1.15rem; letter-spacing: .02em;
+      background: linear-gradient(90deg, var(--sakura), var(--sunset), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; font-size: .88rem; color: var(--muted); }
+    .nav-links a:hover { color: var(--sakura); }
+    @media (max-width: 700px) { .nav-links { display: none; } }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 2rem; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 100% 70% at 50% -10%, rgba(255,107,157,.3) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 90% 90%, rgba(255,154,60,.2) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 10% 80%, rgba(168,85,247,.2) 0%, transparent 60%);
+    }
+    .hero-emoji { font-size: 5rem; display: block; margin-bottom: 1rem; animation: wobble 3s ease-in-out infinite; position: relative; }
+    @keyframes wobble { 0%,100% { transform: rotate(-3deg) scale(1); } 50% { transform: rotate(3deg) scale(1.08); } }
+    .hero h1 {
+      position: relative;
+      font-size: clamp(2.6rem, 7vw, 5.5rem);
+      font-weight: 900; line-height: 1.05; letter-spacing: -.02em;
+      background: linear-gradient(135deg, #ffb3d1 0%, #ffd580 40%, #a5f3fc 80%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 1.3rem;
+    }
+    .hero p { position: relative; max-width: 600px; font-size: 1.2rem; color: var(--muted); margin-bottom: 2.5rem; line-height: 1.7; }
+    .hero-btns { position: relative; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn { display: inline-block; padding: .8rem 2rem; border-radius: .65rem; font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform .15s, box-shadow .15s; }
+    .btn:hover { transform: translateY(-3px); }
+    .btn-glow {
+      background: linear-gradient(135deg, var(--sakura), var(--sunset));
+      color: #fff; box-shadow: 0 4px 24px rgba(255,107,157,.4);
+    }
+    .btn-glow:hover { box-shadow: 0 8px 36px rgba(255,107,157,.6); }
+    .btn-ghost { border: 2px solid var(--border); color: var(--text); background: transparent; }
+    .btn-ghost:hover { border-color: var(--sakura); }
+    .scroll-down {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .4rem;
+      font-size: .75rem; color: var(--muted); animation: bob 2s ease-in-out infinite;
+    }
+    @keyframes bob { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(7px); } }
+
+    /* ── Shared layout ── */
+    section { padding: 5.5rem 1.5rem; position: relative; }
+    .container { max-width: 1120px; margin: 0 auto; }
+    .s-label { display: inline-block; font-size: .72rem; text-transform: uppercase; letter-spacing: .14em; color: var(--sakura); margin-bottom: .6rem; }
+    .s-title { font-size: clamp(1.9rem, 3.8vw, 3rem); font-weight: 900; margin-bottom: .8rem; line-height: 1.1; }
+    .s-sub { color: var(--muted); max-width: 560px; margin-bottom: 3rem; font-size: 1rem; line-height: 1.7; }
+
+    /* ── What is Anime ── */
+    #what { background: var(--bg2); }
+    .what-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.4rem; }
+    .what-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 1.2rem;
+      padding: 2rem 1.6rem; text-align: center;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+    }
+    .what-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,.5); border-color: rgba(255,107,157,.35); }
+    .what-icon { font-size: 2.8rem; margin-bottom: 1rem; display: block; }
+    .what-card h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: .5rem; }
+    .what-card p { font-size: .88rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── Genres ── */
+    #genres { background: var(--bg); }
+    .genre-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+    .genre-pill {
+      background: var(--card); border: 1px solid var(--border); border-radius: .9rem;
+      padding: 1.4rem 1rem; text-align: center; cursor: default;
+      transition: transform .2s, box-shadow .2s;
+      position: relative; overflow: hidden;
+    }
+    .genre-pill::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--glow, rgba(255,107,157,.06));
+      opacity: 0; transition: opacity .2s;
+    }
+    .genre-pill:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+    .genre-pill:hover::before { opacity: 1; }
+    .genre-icon { font-size: 2.2rem; margin-bottom: .6rem; display: block; }
+    .genre-name { font-size: .85rem; font-weight: 700; color: var(--text); }
+    .genre-desc { font-size: .72rem; color: var(--muted); margin-top: .3rem; }
+
+    /* ── Spotlight shows ── */
+    #spotlight { background: var(--bg2); }
+    .spot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .spot-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 1.2rem;
+      overflow: hidden; transition: transform .2s, box-shadow .2s;
+    }
+    .spot-card:hover { transform: translateY(-4px); box-shadow: 0 16px 45px rgba(0,0,0,.5); }
+    .spot-banner {
+      height: 110px; display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem; position: relative; overflow: hidden;
+    }
+    .spot-banner::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(19,19,42,.95) 100%);
+    }
+    .spot-body { padding: 1.4rem; }
+    .spot-tags { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: .8rem; }
+    .stag {
+      display: inline-block; padding: .2rem .6rem; border-radius: 999px;
+      font-size: .68rem; font-weight: 700; border: 1px solid;
+    }
+    .spot-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: .4rem; }
+    .spot-card p { font-size: .87rem; color: var(--muted); line-height: 1.65; }
+    .spot-meta { display: flex; gap: 1rem; margin-top: 1rem; font-size: .8rem; color: var(--muted); }
+    .spot-meta span { display: flex; align-items: center; gap: .3rem; }
+
+    /* ── Age guide ── */
+    #ages { background: var(--bg); }
+    .age-timeline { display: flex; flex-direction: column; gap: 1.2rem; }
+    .age-row {
+      background: var(--card); border: 1px solid var(--border); border-radius: 1.2rem;
+      padding: 1.6rem; display: grid; grid-template-columns: 120px 1fr; gap: 1.5rem; align-items: start;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .age-row:hover { border-color: rgba(255,107,157,.4); box-shadow: 0 8px 30px rgba(0,0,0,.3); }
+    .age-badge-big {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; gap: .3rem;
+    }
+    .age-num { font-size: 2.4rem; font-weight: 900; line-height: 1; }
+    .age-word { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+    .age-shows { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .7rem; }
+    .show-chip {
+      display: inline-flex; align-items: center; gap: .35rem;
+      background: rgba(255,255,255,.05); border: 1px solid var(--border);
+      border-radius: 999px; padding: .3rem .85rem; font-size: .8rem;
+      transition: background .15s, border-color .15s;
+    }
+    .show-chip:hover { background: rgba(255,107,157,.12); border-color: rgba(255,107,157,.4); }
+    @media (max-width: 500px) { .age-row { grid-template-columns: 1fr; } }
+
+    /* ── Culture ── */
+    #culture { background: var(--bg2); }
+    .culture-bento { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto; gap: 1.2rem; }
+    .bento {
+      background: var(--card); border: 1px solid var(--border); border-radius: 1.1rem;
+      padding: 1.6rem; transition: transform .2s, border-color .2s;
+    }
+    .bento:hover { transform: translateY(-3px); border-color: rgba(255,107,157,.3); }
+    .bento.wide { grid-column: span 2; }
+    .bento.tall { grid-row: span 2; }
+    .bento-icon { font-size: 2rem; margin-bottom: .8rem; display: block; }
+    .bento h3 { font-size: 1rem; font-weight: 800; margin-bottom: .5rem; }
+    .bento p { font-size: .87rem; color: var(--muted); line-height: 1.65; }
+    @media (max-width: 680px) { .culture-bento { grid-template-columns: 1fr; } .bento.wide { grid-column: span 1; } }
+
+    /* ── Quiz ── */
+    #quiz { background: var(--bg); }
+    .quiz-box {
+      background: var(--card); border: 1px solid rgba(255,107,157,.25);
+      border-radius: 1.4rem; padding: 2.5rem; max-width: 680px;
+      box-shadow: 0 0 60px rgba(255,107,157,.07);
+    }
+    .quiz-q { font-size: 1.2rem; font-weight: 700; margin-bottom: 1.4rem; }
+    .quiz-options { display: flex; flex-direction: column; gap: .7rem; }
+    .quiz-opt {
+      background: rgba(255,255,255,.04); border: 1px solid var(--border);
+      border-radius: .7rem; padding: .9rem 1.2rem; cursor: pointer;
+      font-size: .95rem; transition: background .15s, border-color .15s, transform .15s;
+      display: flex; align-items: center; gap: .8rem;
+    }
+    .quiz-opt:hover { background: rgba(255,107,157,.1); border-color: var(--sakura); transform: translateX(4px); }
+    .quiz-opt.selected { background: rgba(255,107,157,.15); border-color: var(--sakura); }
+    .quiz-opt-icon { font-size: 1.3rem; flex-shrink: 0; }
+    .quiz-result {
+      display: none; margin-top: 1.8rem;
+      background: linear-gradient(135deg, rgba(255,107,157,.15), rgba(255,154,60,.1));
+      border: 1px solid rgba(255,107,157,.3); border-radius: .9rem; padding: 1.4rem;
+    }
+    .quiz-result.show { display: block; }
+    .quiz-result h4 { font-size: 1.05rem; font-weight: 800; margin-bottom: .4rem; color: #ffb3d1; }
+    .quiz-result p { font-size: .9rem; color: var(--muted); line-height: 1.65; }
+    .quiz-nav { display: flex; gap: 1rem; margin-top: 1.4rem; flex-wrap: wrap; }
+    .quiz-progress { display: flex; gap: .3rem; margin-bottom: 1.4rem; }
+    .qp-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: background .2s; }
+    .qp-dot.active { background: var(--sakura); }
+    .qp-dot.done { background: var(--mint); }
+
+    /* ── Fun facts strip ── */
+    .facts-strip {
+      background: linear-gradient(90deg, rgba(255,107,157,.12), rgba(255,154,60,.08), rgba(168,85,247,.1));
+      border-top: 1px solid rgba(255,107,157,.15); border-bottom: 1px solid rgba(255,107,157,.15);
+      overflow: hidden; padding: 1rem 0;
+    }
+    .facts-ticker {
+      display: flex; gap: 3rem; white-space: nowrap;
+      animation: ticker 30s linear infinite;
+    }
+    .facts-ticker:hover { animation-play-state: paused; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .tick-item { font-size: .88rem; color: var(--muted); flex-shrink: 0; }
+    .tick-item span { color: var(--sakura); font-weight: 700; }
+
+    /* ── Glossary ── */
+    #glossary { background: var(--bg2); }
+    .gloss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+    .gloss-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: .9rem;
+      padding: 1.3rem; transition: border-color .2s;
+    }
+    .gloss-card:hover { border-color: rgba(255,107,157,.35); }
+    .gloss-word { font-size: 1.1rem; font-weight: 800; color: #ffb3d1; margin-bottom: .2rem; }
+    .gloss-romaji { font-size: .75rem; color: var(--muted); margin-bottom: .5rem; font-style: italic; }
+    .gloss-def { font-size: .87rem; color: var(--text); line-height: 1.6; }
+
+    /* ── Getting started ── */
+    #start { background: var(--bg); }
+    .steps { display: flex; flex-direction: column; gap: 1rem; max-width: 700px; }
+    .step {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      background: var(--card); border: 1px solid var(--border); border-radius: 1rem;
+      padding: 1.4rem; transition: border-color .2s, transform .2s;
+    }
+    .step:hover { border-color: rgba(255,107,157,.4); transform: translateX(5px); }
+    .step-num {
+      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1.1rem;
+      background: linear-gradient(135deg, var(--sakura), var(--sunset));
+      color: #fff; box-shadow: 0 4px 14px rgba(255,107,157,.35);
+    }
+    .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: .35rem; }
+    .step p { font-size: .88rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── CTA ── */
+    .cta-wrap {
+      background: linear-gradient(135deg, rgba(255,107,157,.18) 0%, rgba(255,154,60,.12) 50%, rgba(168,85,247,.12) 100%);
+      border-top: 1px solid rgba(255,107,157,.25);
+      text-align: center; padding: 6rem 1.5rem;
+    }
+    .cta-wrap h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; margin-bottom: 1rem; }
+    .cta-wrap p { color: var(--muted); max-width: 500px; margin: 0 auto 2.2rem; font-size: 1.05rem; }
+    .cta-emoji { font-size: 4rem; margin-bottom: 1rem; display: block; animation: wobble 3s ease-in-out infinite; }
+
+    footer {
+      background: var(--card); border-top: 1px solid var(--border);
+      text-align: center; padding: 2rem; font-size: .83rem; color: var(--muted);
+    }
+
+    /* ── Scroll animations ── */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .5s ease, transform .5s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<!-- floating petals -->
+<div class="particles" id="particles"></div>
+
+<!-- ── Nav ── -->
+<nav>
+  <span class="nav-logo">🌸 AnimeWorld</span>
+  <ul class="nav-links">
+    <li><a href="#what">What is Anime</a></li>
+    <li><a href="#genres">Genres</a></li>
+    <li><a href="#spotlight">Must-Watch</a></li>
+    <li><a href="#ages">By Age</a></li>
+    <li><a href="#quiz">Find Your Show</a></li>
+    <li><a href="#start">Get Started</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero" style="margin-top:64px;">
+  <span class="hero-emoji">🌸</span>
+  <h1>Welcome to the<br/>World of Anime</h1>
+  <p>A joyful, vibrant art form loved by millions of families around the world. Discover the magic — and find the perfect show for your family tonight.</p>
+  <div class="hero-btns">
+    <a class="btn btn-glow" href="#spotlight">✨ Must-Watch Shows</a>
+    <a class="btn btn-ghost" href="#quiz">🎯 Find My Show</a>
+  </div>
+  <div class="scroll-down">
+    <span>Explore</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<!-- ── Ticker ── -->
+<div class="facts-strip">
+  <div class="facts-ticker" id="ticker">
+    <span class="tick-item">🌸 Anime has been enjoyed by families since <span>1963</span></span>
+    <span class="tick-item">🏆 Studio Ghibli has won <span>an Academy Award</span> for Best Animated Feature</span>
+    <span class="tick-item">🌍 Anime is watched in <span>over 100 countries</span> worldwide</span>
+    <span class="tick-item">📚 Most anime are based on <span>manga books</span> — a gateway to reading</span>
+    <span class="tick-item">🎨 Studio Ghibli films are <span>hand-drawn</span> at 24 frames per second</span>
+    <span class="tick-item">👾 There are over <span>6,000 anime titles</span> to explore</span>
+    <span class="tick-item">🍜 Anime has inspired <span>real Japanese cooking</span> in families worldwide</span>
+    <span class="tick-item">💪 The word <span>"Ganbatte"</span> — never give up — is a core anime value</span>
+    <!-- duplicate for seamless loop -->
+    <span class="tick-item">🌸 Anime has been enjoyed by families since <span>1963</span></span>
+    <span class="tick-item">🏆 Studio Ghibli has won <span>an Academy Award</span> for Best Animated Feature</span>
+    <span class="tick-item">🌍 Anime is watched in <span>over 100 countries</span> worldwide</span>
+    <span class="tick-item">📚 Most anime are based on <span>manga books</span> — a gateway to reading</span>
+    <span class="tick-item">🎨 Studio Ghibli films are <span>hand-drawn</span> at 24 frames per second</span>
+    <span class="tick-item">👾 There are over <span>6,000 anime titles</span> to explore</span>
+    <span class="tick-item">🍜 Anime has inspired <span>real Japanese cooking</span> in families worldwide</span>
+    <span class="tick-item">💪 The word <span>"Ganbatte"</span> — never give up — is a core anime value</span>
+  </div>
+</div>
+
+<!-- ── What is Anime ── -->
+<section id="what">
+  <div class="container">
+    <span class="s-label">🎌 The Basics</span>
+    <h2 class="s-title">What is Anime?</h2>
+    <p class="s-sub">Anime (pronounced ah-nee-may) is hand-crafted animated storytelling from Japan — packed with heart, adventure, and art you won't find anywhere else.</p>
+    <div class="what-grid">
+      <div class="what-card reveal">
+        <span class="what-icon">🎨</span>
+        <h3>A Unique Art Form</h3>
+        <p>Anime has a distinctive visual style — expressive characters, detailed backgrounds, and cinematic direction that make every frame feel intentional and beautiful.</p>
+      </div>
+      <div class="what-card reveal">
+        <span class="what-icon">📖</span>
+        <h3>Stories with Soul</h3>
+        <p>From epic adventures to quiet slice-of-life moments, anime covers the full range of human experience — told with patience, depth, and genuine emotion.</p>
+      </div>
+      <div class="what-card reveal">
+        <span class="what-icon">🌏</span>
+        <h3>A Window to Japan</h3>
+        <p>Every series is a natural introduction to Japanese culture, language, food, festivals, and values — sparking curiosity about the wider world.</p>
+      </div>
+      <div class="what-card reveal">
+        <span class="what-icon">👨‍👩‍👧</span>
+        <h3>For Every Age</h3>
+        <p>There are wonderful anime for toddlers, kids, teens, and adults. The range is enormous — and the best family anime are genuinely enjoyable for parents too.</p>
+      </div>
+      <div class="what-card reveal">
+        <span class="what-icon">💛</span>
+        <h3>Values-Driven</h3>
+        <p>Perseverance, friendship, kindness, and hard work are the backbone of most beloved anime. These aren't hidden lessons — they're celebrated loudly.</p>
+      </div>
+      <div class="what-card reveal">
+        <span class="what-icon">📚</span>
+        <h3>The Manga Connection</h3>
+        <p>Almost every anime has a manga (illustrated comic) to go with it. Kids who love a show naturally pick up the books — making anime one of the best reading gateways around.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Genres ── -->
+<section id="genres">
+  <div class="container">
+    <span class="s-label">🗂️ Explore</span>
+    <h2 class="s-title">Every Genre<br/>Imaginable</h2>
+    <p class="s-sub">Whatever your family is into, there's an anime for it. Here's a taste of the incredible variety.</p>
+    <div class="genre-grid">
+      <div class="genre-pill reveal" style="--glow:rgba(255,107,157,.08);">
+        <span class="genre-icon">⚔️</span>
+        <div class="genre-name">Adventure</div>
+        <div class="genre-desc">Epic quests, heroes rising</div>
+      </div>
+      <div class="genre-pill reveal" style="--glow:rgba(79,195,247,.08);">
+        <span class="genre-icon">🔬</span>
+        <div class="genre-name">Sci-Fi</div>
+        <div class="genre-desc">Space, robots, future worlds</div>
+      </div>
+      <div class="genre-pill reveal" style="--glow:rgba(67,233,123,.08);">
+        <span class="genre-icon">🌿</span>
+        <div class="genre-name">Slice of Life</div>
+        <div class="genre-desc">Everyday joy and warmth</div>
+      </div>
+      <div class="genre-pill reveal" style="--glow:rgba(251,191,36,.08);">
+        <span class="genre-icon">🏆</span>
+        <div class="genre-name">Sports</div>
+        <div class="genre-desc">Passion, teamwork, grit</div>
+      </div>
+      <div class="genre-pill reveal" style="--glow:rgba(255,154,60,.08);">
+        <span class="genre-icon">🍳</span>
+        <div class="genre-name">Food & Cooking</div>
+        <div class="genre-desc">Delicious stories, real recipes</div>
+      </div>
+      <div class="genre-pill reveal" style="--glow:rgba(168,85,247,.08);">
+        <span class="genre-icon">🎵</span>
+        <div class="genre-name">Music</div>
+        <div class="genre-desc">Bands, orchestras, passion</div>
+      </div>
+      <div class="genre-pill reveal" style="--glow:rgba(255,107,157,.08);">
+        <span class="genre-icon">🌸</span>
+        <div class="genre-name">Romance</div>
+        <div class="genre-desc">Tender, sweet, heartfelt</div>
+      </div>
+      <div class="genre-pill reveal" style="--glow:rgba(79,195,247,.08);">
+        <span class="genre-icon">🏫</span>
+        <div class="genre-name">School Life</div>
+        <div class="genre-desc">Friendship and growing up</div>
+      </div>
+      <div class="genre-pill reveal" style="--glow:rgba(67,233,123,.08);">
+        <span class="genre-icon">🧙</span>
+        <div class="genre-name">Fantasy</div>
+        <div class="genre-desc">Magic, spirits, other worlds</div>
+      </div>
+      <div class="genre-pill reveal" style="--glow:rgba(251,191,36,.08);">
+        <span class="genre-icon">🌊</span>
+        <div class="genre-name">Nature</div>
+        <div class="genre-desc">Animals, forests, the sea</div>
+      </div>
+      <div class="genre-pill reveal" style="--glow:rgba(255,154,60,.08);">
+        <span class="genre-icon">🕵️</span>
+        <div class="genre-name">Mystery</div>
+        <div class="genre-desc">Puzzles, twists, intrigue</div>
+      </div>
+      <div class="genre-pill reveal" style="--glow:rgba(168,85,247,.08);">
+        <span class="genre-icon">😂</span>
+        <div class="genre-name">Comedy</div>
+        <div class="genre-desc">Pure joy and laughs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Must-Watch Spotlight ── -->
+<section id="spotlight">
+  <div class="container">
+    <span class="s-label">⭐ Must-Watch</span>
+    <h2 class="s-title">Family Favourites<br/>to Start With</h2>
+    <p class="s-sub">Hand-picked shows and films that families love — no prior anime experience needed.</p>
+    <div class="spot-grid">
+
+      <div class="spot-card reveal">
+        <div class="spot-banner" style="background:linear-gradient(135deg,#1a3a1a,#2d6a2d);">🌳</div>
+        <div class="spot-body">
+          <div class="spot-tags">
+            <span class="stag" style="color:#86efac;border-color:rgba(134,239,172,.3);background:rgba(134,239,172,.08);">Family</span>
+            <span class="stag" style="color:#fde68a;border-color:rgba(253,230,138,.3);background:rgba(253,230,138,.08);">Nature</span>
+            <span class="stag" style="color:#a5f3fc;border-color:rgba(165,243,252,.3);background:rgba(165,243,252,.08);">Studio Ghibli</span>
+          </div>
+          <h3>My Neighbor Totoro</h3>
+          <p>Two sisters move to the countryside and discover magical forest spirits. Pure wonder and warmth — the perfect first anime for any family. You will cry happy tears.</p>
+          <div class="spot-meta">
+            <span>🎬 Film · 86 min</span>
+            <span>👶 All ages</span>
+            <span>📍 Netflix</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="spot-card reveal">
+        <div class="spot-banner" style="background:linear-gradient(135deg,#1a1a3a,#2a1a5a);">🌊</div>
+        <div class="spot-body">
+          <div class="spot-tags">
+            <span class="stag" style="color:#c4b5fd;border-color:rgba(196,181,253,.3);background:rgba(196,181,253,.08);">Adventure</span>
+            <span class="stag" style="color:#fda4af;border-color:rgba(253,164,175,.3);background:rgba(253,164,175,.08);">Magic</span>
+            <span class="stag" style="color:#a5f3fc;border-color:rgba(165,243,252,.3);background:rgba(165,243,252,.08);">Studio Ghibli</span>
+          </div>
+          <h3>Spirited Away</h3>
+          <p>A girl is swept into a magical spirit world and must find the courage to save her family. One of the greatest animated films ever made — holds up for any age group.</p>
+          <div class="spot-meta">
+            <span>🎬 Film · 125 min</span>
+            <span>👧 Ages 7+</span>
+            <span>📍 Netflix</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="spot-card reveal">
+        <div class="spot-banner" style="background:linear-gradient(135deg,#2a1000,#5a2500);">⚡</div>
+        <div class="spot-body">
+          <div class="spot-tags">
+            <span class="stag" style="color:#fde68a;border-color:rgba(253,230,138,.3);background:rgba(253,230,138,.08);">Adventure</span>
+            <span class="stag" style="color:#86efac;border-color:rgba(134,239,172,.3);background:rgba(134,239,172,.08);">Friendship</span>
+            <span class="stag" style="color:#fda4af;border-color:rgba(253,164,175,.3);background:rgba(253,164,175,.08);">Classic</span>
+          </div>
+          <h3>Pokémon (Original Series)</h3>
+          <p>Ash and Pikachu travel the world, make friends, and grow together. A genuine classic about responsibility, kindness, and never giving up on your dreams.</p>
+          <div class="spot-meta">
+            <span>📺 Series</span>
+            <span>👶 Ages 5+</span>
+            <span>📍 Netflix</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="spot-card reveal">
+        <div class="spot-banner" style="background:linear-gradient(135deg,#001a2a,#003d5a);">🏐</div>
+        <div class="spot-body">
+          <div class="spot-tags">
+            <span class="stag" style="color:#7dd3fc;border-color:rgba(125,211,252,.3);background:rgba(125,211,252,.08);">Sports</span>
+            <span class="stag" style="color:#86efac;border-color:rgba(134,239,172,.3);background:rgba(134,239,172,.08);">Teamwork</span>
+            <span class="stag" style="color:#fde68a;border-color:rgba(253,230,138,.3);background:rgba(253,230,138,.08);">Motivation</span>
+          </div>
+          <h3>Haikyu!!</h3>
+          <p>A short boy who loves volleyball refuses to give up on his dreams. The most motivating sports story ever told — kids have genuinely taken up volleyball after watching this.</p>
+          <div class="spot-meta">
+            <span>📺 Series · 4 seasons</span>
+            <span>👦 Ages 10+</span>
+            <span>📍 Crunchyroll</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="spot-card reveal">
+        <div class="spot-banner" style="background:linear-gradient(135deg,#1a0a2a,#3d0a5a);">🦸</div>
+        <div class="spot-body">
+          <div class="spot-tags">
+            <span class="stag" style="color:#c4b5fd;border-color:rgba(196,181,253,.3);background:rgba(196,181,253,.08);">Superhero</span>
+            <span class="stag" style="color:#fde68a;border-color:rgba(253,230,138,.3);background:rgba(253,230,138,.08);">Hard Work</span>
+            <span class="stag" style="color:#fda4af;border-color:rgba(253,164,175,.3);background:rgba(253,164,175,.08);">Ethics</span>
+          </div>
+          <h3>My Hero Academia</h3>
+          <p>In a world where nearly everyone has superpowers, a boy born without any dreams of becoming a hero. A powerful story about effort beating natural talent — every time.</p>
+          <div class="spot-meta">
+            <span>📺 Series · 7 seasons</span>
+            <span>👦 Ages 10+</span>
+            <span>📍 Crunchyroll / Netflix</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="spot-card reveal">
+        <div class="spot-banner" style="background:linear-gradient(135deg,#0a1a2a,#0a3a4a);">🎹</div>
+        <div class="spot-body">
+          <div class="spot-tags">
+            <span class="stag" style="color:#a5f3fc;border-color:rgba(165,243,252,.3);background:rgba(165,243,252,.08);">Music</span>
+            <span class="stag" style="color:#fda4af;border-color:rgba(253,164,175,.3);background:rgba(253,164,175,.08);">Emotional</span>
+            <span class="stag" style="color:#86efac;border-color:rgba(134,239,172,.3);background:rgba(134,239,172,.08);">Healing</span>
+          </div>
+          <h3>Your Lie in April</h3>
+          <p>A piano prodigy who lost his hearing meets a violinist who changes his life. Stunningly beautiful — about loss, music, and finding joy again. Best watched with tissues.</p>
+          <div class="spot-meta">
+            <span>📺 Series · 22 eps</span>
+            <span>👧 Ages 12+</span>
+            <span>📍 Netflix</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Ages ── -->
+<section id="ages">
+  <div class="container">
+    <span class="s-label">👶 For Every Kid</span>
+    <h2 class="s-title">Perfect Picks<br/>by Age</h2>
+    <p class="s-sub">Every child grows with anime. Here are trusted picks at every stage.</p>
+    <div class="age-timeline">
+
+      <div class="age-row reveal">
+        <div class="age-badge-big">
+          <div class="age-num" style="color:#86efac;">4–7</div>
+          <div class="age-word">Little ones</div>
+          <div style="font-size:1.8rem;margin-top:.3rem;">🐣</div>
+        </div>
+        <div>
+          <p style="font-size:.88rem;color:var(--muted);margin-bottom:.9rem;line-height:1.6;">Sweet, gentle shows full of curiosity, animals, and kind characters. Perfect for bedtime or weekend mornings.</p>
+          <div class="age-shows">
+            <span class="show-chip">🌳 My Neighbor Totoro</span>
+            <span class="show-chip">🐹 Hamtaro</span>
+            <span class="show-chip">🤖 Doraemon</span>
+            <span class="show-chip">🧹 Kiki's Delivery Service</span>
+            <span class="show-chip">🐱 Chi's Sweet Home</span>
+            <span class="show-chip">🐟 Ponyo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="age-row reveal">
+        <div class="age-badge-big">
+          <div class="age-num" style="color:#7dd3fc;">8–11</div>
+          <div class="age-word">Explorer</div>
+          <div style="font-size:1.8rem;margin-top:.3rem;">🌱</div>
+        </div>
+        <div>
+          <p style="font-size:.88rem;color:var(--muted);margin-bottom:.9rem;line-height:1.6;">Bigger stories, deeper friendships, and the first real emotions. Great for watching together and talking about.</p>
+          <div class="age-shows">
+            <span class="show-chip">⚡ Pokémon</span>
+            <span class="show-chip">🌊 Spirited Away</span>
+            <span class="show-chip">⭐ Cardcaptor Sakura</span>
+            <span class="show-chip">🎩 Little Witch Academia</span>
+            <span class="show-chip">🦊 Yo-Kai Watch</span>
+            <span class="show-chip">🎵 Sound! Euphonium Jr.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="age-row reveal">
+        <div class="age-badge-big">
+          <div class="age-num" style="color:#c4b5fd;">12–14</div>
+          <div class="age-word">Tween</div>
+          <div style="font-size:1.8rem;margin-top:.3rem;">🚀</div>
+        </div>
+        <div>
+          <p style="font-size:.88rem;color:var(--muted);margin-bottom:.9rem;line-height:1.6;">Complex characters, real challenges, and stories about ambition and identity. Rich territory for conversation.</p>
+          <div class="age-shows">
+            <span class="show-chip">🦸 My Hero Academia</span>
+            <span class="show-chip">🏐 Haikyu!!</span>
+            <span class="show-chip">🐱 A Silent Voice</span>
+            <span class="show-chip">⚗️ Fullmetal Alchemist: Brotherhood</span>
+            <span class="show-chip">🌿 Natsume's Book of Friends</span>
+            <span class="show-chip">♟️ March Comes in Like a Lion</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="age-row reveal">
+        <div class="age-badge-big">
+          <div class="age-num" style="color:#fda4af;">15+</div>
+          <div class="age-word">Teen</div>
+          <div style="font-size:1.8rem;margin-top:.3rem;">🌟</div>
+        </div>
+        <div>
+          <p style="font-size:.88rem;color:var(--muted);margin-bottom:.9rem;line-height:1.6;">Mature themes, philosophical depth, and stunning emotional storytelling. Watch together and expect long conversations after.</p>
+          <div class="age-shows">
+            <span class="show-chip">🎹 Your Lie in April</span>
+            <span class="show-chip">🌺 Violet Evergarden</span>
+            <span class="show-chip">🌲 Princess Mononoke</span>
+            <span class="show-chip">🍓 Fruits Basket</span>
+            <span class="show-chip">⏰ Steins;Gate</span>
+            <span class="show-chip">🌙 The Garden of Words</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Culture Bento ── -->
+<section id="culture">
+  <div class="container">
+    <span class="s-label">🏯 Discover Japan</span>
+    <h2 class="s-title">Anime Opens a<br/>Door to Culture</h2>
+    <p class="s-sub">Watching anime is the most natural way for kids to discover Japanese culture — no textbook needed.</p>
+    <div class="culture-bento">
+      <div class="bento wide reveal">
+        <span class="bento-icon">🍱</span>
+        <h3>Food & Cooking</h3>
+        <p>Anime takes food seriously. <em>Food Wars!</em>, <em>Sweetness and Lightning</em>, and countless other series lovingly depict Japanese dishes — ramen, onigiri, bento boxes, takoyaki. Many families have started cooking Japanese food together after watching. It's one of the most tangible, joyful cultural crossovers anime creates.</p>
+      </div>
+      <div class="bento reveal">
+        <span class="bento-icon">🎋</span>
+        <h3>Festivals & Seasons</h3>
+        <p>Tanabata, Obon, hanami (cherry blossom viewing) — anime weaves Japanese seasonal traditions into stories naturally, sparking curiosity about the calendar year in Japan.</p>
+      </div>
+      <div class="bento reveal">
+        <span class="bento-icon">🗣️</span>
+        <h3>Language Sparks</h3>
+        <p>Kids naturally absorb Japanese words and phrases just by watching. Many end up asking for Japanese lessons — giving them a huge head-start when they study it formally.</p>
+      </div>
+      <div class="bento reveal">
+        <span class="bento-icon">⛩️</span>
+        <h3>Shrines & Spirits</h3>
+        <p>Shinto beliefs, forest spirits, and local shrines appear throughout anime like <em>Spirited Away</em> and <em>Natsume's Book of Friends</em> — opening natural discussions about world religions and folklore.</p>
+      </div>
+      <div class="bento wide reveal">
+        <span class="bento-icon">🎎</span>
+        <h3>Art, Craft & Fashion</h3>
+        <p>From the intricate kimono designs in historical anime to the incredible concept art of mecha series, anime trains children's visual literacy and sparks interest in traditional and modern Japanese art forms. Many young anime fans have gone on to study design, illustration, and art professionally — tracing it back to a show they loved as a child.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Glossary ── -->
+<section id="glossary">
+  <div class="container">
+    <span class="s-label">📖 Learn the Lingo</span>
+    <h2 class="s-title">Anime Words<br/>Your Kids Will Use</h2>
+    <p class="s-sub">You'll hear these all the time — now you can join the conversation.</p>
+    <div class="gloss-grid">
+      <div class="gloss-card reveal">
+        <div class="gloss-word">Anime</div>
+        <div class="gloss-romaji">ah-nee-may</div>
+        <div class="gloss-def">Japanese animation. In Japan the word covers all animation; outside Japan it specifically means Japanese-style animated works.</div>
+      </div>
+      <div class="gloss-card reveal">
+        <div class="gloss-word">Manga</div>
+        <div class="gloss-romaji">mahn-ga</div>
+        <div class="gloss-def">Japanese comic books, read right-to-left. Most anime series are adapted from manga. The books kids reach for after a show.</div>
+      </div>
+      <div class="gloss-card reveal">
+        <div class="gloss-word">Ganbatte</div>
+        <div class="gloss-romaji">gan-bah-teh</div>
+        <div class="gloss-def">"Do your best" or "Never give up." Perhaps the most common message in all of anime. Kids genuinely start saying this to each other.</div>
+      </div>
+      <div class="gloss-card reveal">
+        <div class="gloss-word">Nakama</div>
+        <div class="gloss-romaji">nah-kah-mah</div>
+        <div class="gloss-def">Your crew — friends who feel like family. Central to shows like <em>One Piece</em> and <em>Naruto</em>. A beautiful concept about chosen bonds.</div>
+      </div>
+      <div class="gloss-card reveal">
+        <div class="gloss-word">Kawaii</div>
+        <div class="gloss-romaji">ka-wah-ee</div>
+        <div class="gloss-def">"Cute" — but as a genuine aesthetic and cultural value. Studio Ghibli characters like Totoro embody kawaii perfectly.</div>
+      </div>
+      <div class="gloss-card reveal">
+        <div class="gloss-word">Sensei</div>
+        <div class="gloss-romaji">sen-say</div>
+        <div class="gloss-def">Teacher or master. Used in anime to refer to mentors, coaches, and teachers. A term of deep respect.</div>
+      </div>
+      <div class="gloss-card reveal">
+        <div class="gloss-word">Bento</div>
+        <div class="gloss-romaji">ben-toh</div>
+        <div class="gloss-def">A packed lunch box — a staple of school-life anime. Many kids ask their parents to make them a bento after watching anime featuring them.</div>
+      </div>
+      <div class="gloss-card reveal">
+        <div class="gloss-word">Senpai</div>
+        <div class="gloss-romaji">sen-pie</div>
+        <div class="gloss-def">An upperclassman or someone more experienced than you. Anime uses this to explore mentorship, respect, and aspiration beautifully.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Quiz ── -->
+<section id="quiz">
+  <div class="container">
+    <span class="s-label">🎯 Personalised Pick</span>
+    <h2 class="s-title">What Should<br/>Your Family Watch?</h2>
+    <p class="s-sub">Answer 3 quick questions and we'll match you to the perfect first show.</p>
+
+    <div class="quiz-box reveal">
+      <div class="quiz-progress" id="qprogress">
+        <div class="qp-dot active" id="d0"></div>
+        <div class="qp-dot" id="d1"></div>
+        <div class="qp-dot" id="d2"></div>
+      </div>
+      <div id="q-wrap"></div>
+      <div class="quiz-nav" id="q-nav"></div>
+      <div class="quiz-result" id="q-result">
+        <h4 id="r-title"></h4>
+        <p id="r-body"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Getting Started ── -->
+<section id="start">
+  <div class="container">
+    <span class="s-label">🚀 Begin Tonight</span>
+    <h2 class="s-title">How to Get<br/>Started — Right Now</h2>
+    <p class="s-sub">No experience needed. Five simple steps from zero to your first family anime night.</p>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <div>
+          <h3>Open Netflix or Crunchyroll</h3>
+          <p>Both have excellent family anime sections with clear age ratings. Netflix has all Studio Ghibli films. Crunchyroll is the dedicated anime platform with thousands of titles and solid parental controls.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">2</div>
+        <div>
+          <h3>Start with a Ghibli Film</h3>
+          <p>No subtitles needed — the English dubs are wonderful. <em>My Neighbor Totoro</em> is 86 minutes of pure magic. Put it on a Friday evening with snacks. That's it. That's the whole plan.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">3</div>
+        <div>
+          <h3>Let Your Kids Pick the Next One</h3>
+          <p>Once they're hooked, let them lead. Use the age guide above to narrow it down, then let them choose. Ownership matters — they'll be more engaged if the choice is theirs.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">4</div>
+        <div>
+          <h3>Set a Comfortable Rhythm</h3>
+          <p>Two episodes on a school night, movie on weekends — whatever works for your family. The natural episode format makes stopping points easy and removes the "just one more" battle.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">5</div>
+        <div>
+          <h3>Follow the Story Beyond the Screen</h3>
+          <p>Look up the manga at the library. Cook a dish from the show. Look Japan up on a map. Draw a character together. The stories are designed to spill out into life — let them.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<div class="cta-wrap">
+  <span class="cta-emoji">🌸</span>
+  <h2>Your Anime Journey<br/>Starts Tonight</h2>
+  <p>One film. One evening. A world your whole family will fall in love with.</p>
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;">
+    <a class="btn btn-glow" href="#spotlight">Pick a Show</a>
+    <a class="btn btn-ghost" href="#quiz">Take the Quiz</a>
+  </div>
+</div>
+
+<footer>
+  <p>🌸 AnimeWorld Family Guide &nbsp;·&nbsp; Made for curious families everywhere &nbsp;·&nbsp; 2026</p>
+</footer>
+
+<script>
+// ── Floating Petals ──────────────────────────────────────────────────────────
+(function() {
+  const container = document.getElementById('particles');
+  const emojis = ['🌸','✨','⭐','🌟','💫','🌺','🍃','🎋'];
+  const colors = ['#ff6b9d','#ff9a3c','#4fc3f7','#a855f7','#fbbf24','#43e97b'];
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 14 + 8;
+    p.style.cssText = `
+      left:${Math.random()*100}%;
+      width:${size}px; height:${size}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${Math.random()*18+12}s;
+      animation-delay:${Math.random()*15}s;
+      opacity:0;
+    `;
+    // Some are emoji
+    if (Math.random() > .5) {
+      p.style.background = 'transparent';
+      p.style.fontSize = size + 'px';
+      p.style.lineHeight = '1';
+      p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      p.style.borderRadius = '0';
+    }
+    container.appendChild(p);
+  }
+})();
+
+// ── Scroll Reveal ────────────────────────────────────────────────────────────
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// ── Quiz ─────────────────────────────────────────────────────────────────────
+const questions = [
+  {
+    q: "How old are the kids watching?",
+    opts: [
+      { icon:"🐣", label:"4 – 7  (Little ones)" },
+      { icon:"🌱", label:"8 – 11  (Growing up)" },
+      { icon:"🚀", label:"12 – 14  (Tweens)" },
+      { icon:"🌟", label:"15+  (Teens)" }
+    ]
+  },
+  {
+    q: "What kind of story sounds most exciting?",
+    opts: [
+      { icon:"🌿", label:"Quiet, cosy and heartwarming" },
+      { icon:"⚔️", label:"Epic adventure and action" },
+      { icon:"🏆", label:"Sports, competition and grit" },
+      { icon:"🎵", label:"Art, music or creativity" }
+    ]
+  },
+  {
+    q: "How long do you have tonight?",
+    opts: [
+      { icon:"⚡", label:"30 – 45 min  (one episode)" },
+      { icon:"🕐", label:"~1.5 hours  (short film)" },
+      { icon:"🌙", label:"2+ hours  (we're committed!)" },
+      { icon:"📺", label:"Weekend binge — bring it on" }
+    ]
+  }
+];
+const results = [
+  // [age][vibe][length]
+  { title:"🌳 My Neighbor Totoro", body:"A magical 86-minute film about two sisters and a gentle forest spirit. Perfect for little ones — cosy, gentle, and full of wonder. Available on Netflix." },
+  { title:"⚡ Pokémon (Original)", body:"Ash and Pikachu's adventure is an endlessly rewatchable classic. Start from Episode 1 — it holds up brilliantly, and there's so much to explore together." },
+  { title:"🏐 Haikyu!! Season 1", body:"The most motivating sports anime ever made. Kids have genuinely taken up volleyball after watching this. Starts strong and never slows down." },
+  { title:"🎹 Your Lie in April", body:"A stunning music anime about loss, healing and finding joy again. Beautiful and emotional — best watched with older teens who enjoy deeper stories." },
+  { title:"🌊 Spirited Away", body:"A girl enters a magical spirit world to save her family. An Academy Award-winning masterpiece — perfect for any age that can follow a 2-hour story." },
+  { title:"🦸 My Hero Academia S1", body:"A boy born without powers in a world full of heroes refuses to give up. Every episode ends on a cliffhanger — ideal for a weekend binge session." },
+  { title:"🎩 Little Witch Academia", body:"A girl joins a magic school despite having no natural talent. Pure joy, great humour, and the best 'never give up' message you'll find in 25 episodes." },
+  { title:"🌸 Cardcaptor Sakura", body:"A kind-hearted girl discovers magical powers and uses them to protect the people she loves. Warm, bright, and brilliantly paced for younger viewers." }
+];
+
+let answers = [];
+let current = 0;
+
+function renderQ() {
+  const wrap = document.getElementById('q-wrap');
+  const nav  = document.getElementById('q-nav');
+  const q = questions[current];
+
+  // dots
+  document.querySelectorAll('.qp-dot').forEach((d,i) => {
+    d.className = 'qp-dot' + (i < current ? ' done' : i === current ? ' active' : '');
+  });
+
+  wrap.innerHTML = `<div class="quiz-q">${q.q}</div>
+    <div class="quiz-options">
+      ${q.opts.map((o,i) => `
+        <div class="quiz-opt ${answers[current]===i?'selected':''}" onclick="pickOpt(${i})">
+          <span class="quiz-opt-icon">${o.icon}</span>
+          <span>${o.label}</span>
+        </div>`).join('')}
+    </div>`;
+
+  nav.innerHTML = '';
+  if (current > 0) {
+    const back = document.createElement('button');
+    back.className = 'btn btn-ghost'; back.style.fontSize='.85rem'; back.style.padding='.6rem 1.2rem';
+    back.textContent = '← Back'; back.onclick = () => { current--; renderQ(); };
+    nav.appendChild(back);
+  }
+  if (answers[current] !== undefined) {
+    const next = document.createElement('button');
+    next.className = 'btn btn-glow'; next.style.fontSize='.85rem'; next.style.padding='.6rem 1.4rem';
+    next.textContent = current < questions.length-1 ? 'Next →' : 'Show my pick! 🎉';
+    next.onclick = () => {
+      if (current < questions.length-1) { current++; renderQ(); }
+      else { showResult(); }
+    };
+    nav.appendChild(next);
+  }
+  document.getElementById('q-result').classList.remove('show');
+}
+
+function pickOpt(i) {
+  answers[current] = i;
+  renderQ();
+}
+
+function showResult() {
+  const idx = (answers[0] + answers[1] * 2 + answers[2]) % results.length;
+  const r = results[idx];
+  document.getElementById('r-title').textContent = r.title;
+  document.getElementById('r-body').textContent  = r.body;
+  document.getElementById('q-result').classList.add('show');
+  const nav = document.getElementById('q-nav');
+  // add restart button
+  const restart = document.createElement('button');
+  restart.className = 'btn btn-ghost'; restart.style.fontSize='.85rem'; restart.style.padding='.6rem 1.2rem';
+  restart.textContent = '↩ Try again';
+  restart.onclick = () => { answers = []; current = 0; renderQ(); };
+  nav.innerHTML = '';
+  nav.appendChild(restart);
+}
+
+renderQ();
+</script>
+</body>
+</html>
